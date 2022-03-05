@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "715776707326",
+    "project_id": "theircalling-2dfbd",
+    "storage_bucket": "theircalling-2dfbd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715776707326:android:3be909e778a256a47b73af",
+        "android_client_info": {
+          "package_name": "com.example.vekant_filesharing_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715776707326-e2kkgr79bebei5dvs26nv45qvo0nf3er.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vekant_filesharing_app",
+            "certificate_hash": "243ee650ad6f31c09d40262fc81cfb1de0ff1e96"
+          }
+        },
+        {
+          "client_id": "715776707326-73p2ut9d6se03c6pcdslbjedttiiikll.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuYeqCtV6PQapEmPnADfpTrDPL-t1iMpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715776707326-73p2ut9d6se03c6pcdslbjedttiiikll.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
