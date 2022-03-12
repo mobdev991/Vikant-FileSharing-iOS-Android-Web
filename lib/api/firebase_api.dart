@@ -33,6 +33,8 @@ class FirebaseApi {
       ref.getMetadata().then((value) {
         print('in then');
         var sizeInBytes= value.size;
+        var s = value.contentType?.contains('video');
+        print('Content Type :: ' + s!.toString());
         totalSizeGB = totalSizeGB + (sizeInBytes!/(1024 * 1024));
         size = (sizeInBytes/(1024 * 1024)).toString();
         print(size);
@@ -84,6 +86,49 @@ class FirebaseApi {
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     int finalSize = 2;
     return finalSize;
+  }
+
+  static Future<List<FirebaseFile>> listAllImages(String path) async {
+    print('priinting in ListAllImages');
+    final ref = FirebaseStorage.instance.ref(path);
+    final result = await ref.listAll();
+
+    final urls = await _getDownloadLinks(result.items);
+
+    return urls
+        .asMap()
+        .map((index, url) {
+      final ref = result.items[index];
+      final name = ref.name;
+      // var urleee = Uri.https('www.googleapis.com', ref.fullPath);
+      // http.Response response = http.get(urleee) as http.Response;
+      var size = ' ';
+      ref.getMetadata().then((value) {
+        print('in then');
+        if(value.contentType!.contains('video')){
+          print('printing inside videos');
+          numberOfVideos = numberOfVideos + 1;
+        }
+        else if(value.contentType!.contains('image')){
+          numberOfImages = numberOfImages + 1;
+        }
+        else if(value.contentType!.contains('audio')){
+          numberOfAudio = numberOfAudio + 1;
+        }
+        else{
+          numberOfFiles = numberOfFiles + 1;
+        }
+      });
+
+      // final sizeInMbs = (size/(1024 * 1024)).toString();
+      final file = FirebaseFile(ref: ref, name: name, url: url,size: size);
+
+      print('File Name :: $name  File Size :: $size');
+
+      return MapEntry(index, file);
+    })
+        .values
+        .toList();
   }
 
   // var filePath = File(ref.fullPath);

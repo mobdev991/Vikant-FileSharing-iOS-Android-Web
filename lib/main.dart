@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:vekant_filesharing_app/pages/list_files.dart';
+import 'package:vekant_filesharing_app/pages/main_screen.dart';
 import 'package:vekant_filesharing_app/signin_page.dart';
 
 
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SignInPage(),
+      home: FirebaseAuth.instance.currentUser == null ? SignInPage() : MainScreen(),
     );
   }
 }

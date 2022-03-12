@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:vekant_filesharing_app/config.dart';
 import 'package:vekant_filesharing_app/pages/list_files.dart';
 import 'package:vekant_filesharing_app/widgets/button_widget.dart';
+
+import 'package:permission_handler/permission_handler.dart';
 import '../api/firebase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -18,6 +21,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   UploadTask? task;
   File? file;
+  bool appPermissioncheck = true;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyApp.title'),
+        title: Text('FileSharing'),
         centerTitle: true,
       ),
       body: Container(
@@ -108,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future selectFile() async {
+    checkPermission();
 
     print("User ID :: "+ FirebaseAuth.instance.currentUser!.uid);
 
@@ -154,4 +159,63 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     },
   );
+
+  void showRequestPermissionDialog(){
+
+    showDialog(
+        context: context as BuildContext,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: Text('Location Permission',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.indigo)),
+          content: Text(
+            'Rio Drive collects location Data to enable "Ride Request" and "Location Tracking" Features, even when the app is closed or not in use', style: TextStyle(fontSize: 15,),),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text('Deny',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.indigo)),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            CupertinoDialogAction(
+              child: Text('Allow',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.indigo)),
+              onPressed: () {
+                appPermissioncheck = false;
+                Permission.location.request();
+                Navigator.pop(context);
+
+
+              },
+            ),
+          ],
+        ));
+  }
+
+  void checkPermission() async{
+    var status = await Permission.location.status;
+
+    if(status.isDenied){
+      print('location permission is denied..............................');
+    }else{
+
+      print('location permission is NOT denied..............................');
+    }
+
+    if(status.isRestricted){
+      print('location permission is Restricted..............................');
+    }else{
+
+      print('location permission is NOT Restricted..............................');
+    }
+
+    if(status.isPermanentlyDenied){
+      print('location permission is PermanentlyDenied..............................');
+    }else{
+
+      print('location permission is NOT PermanentalyDenied..............................');
+    } if(status.isGranted){
+      print('location permission is Granted..............................');
+    }else{
+      showRequestPermissionDialog();
+
+    }
+
+
+  }
 }
