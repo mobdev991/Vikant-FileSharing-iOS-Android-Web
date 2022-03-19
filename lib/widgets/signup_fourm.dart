@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vekant_filesharing_app/pages/list_files.dart';
+import 'package:vekant_filesharing_app/pages/main_screen.dart';
 import '../main.dart';
 import '../my_home_page.dart';
 
@@ -128,7 +129,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 print('car info screen');
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                    MaterialPageRoute(builder: (context) => MainScreen()),
                         (route) => false);
                 registerNewUser(context);
               }else{

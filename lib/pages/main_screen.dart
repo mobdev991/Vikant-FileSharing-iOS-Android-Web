@@ -7,10 +7,11 @@ import 'package:vekant_filesharing_app/files_category/files.dart';
 import 'package:vekant_filesharing_app/files_category/images.dart';
 import 'package:vekant_filesharing_app/files_category/videos.dart';
 import 'package:vekant_filesharing_app/my_home_page.dart';
+import 'package:vekant_filesharing_app/pages/received_files.dart';
+import 'package:vekant_filesharing_app/pages/send_files.dart';
 import 'package:vekant_filesharing_app/signin_page.dart';
 import '../api/firebase_api.dart';
 import '../models/firebase_file.dart';
-import 'image_page.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -22,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+
     super.initState();
     final userID = FirebaseAuth.instance.currentUser!.uid;
     currentFirebaseUserID = userID;
@@ -77,7 +79,8 @@ class _MainScreenState extends State<MainScreen> {
                     color: Colors.white),
               ),
               onTap: () {
-
+                print('Received Files Clicked!');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivedFilesPage()));
               },
             ),
             ListTile(
@@ -91,6 +94,8 @@ class _MainScreenState extends State<MainScreen> {
                     color: Colors.white),
               ),
               onTap: () {
+                      print('Send Files Clicked!');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SendFilesPage()));
 
               },
             ),
@@ -159,16 +164,6 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   buildHeader(files.length),
                   const SizedBox(height: 12),
-                  // Expanded(
-                  //   child: ListView.builder(
-                  //     itemCount: files.length,
-                  //     itemBuilder: (context, index) {
-                  //       final file = files[index];
-                  //
-                  //       return buildFile(context, file);
-                  //     },
-                  //   ),
-                  // ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                     child: Column(
@@ -277,28 +272,6 @@ class _MainScreenState extends State<MainScreen> {
       },
     ),
   );
-
-  // Widget buildFile(BuildContext context, FirebaseFile file) => ListTile(
-  //   leading: ClipOval(
-  //     child: Image.network(
-  //       file.url,
-  //       width: 52,
-  //       height: 52,
-  //       fit: BoxFit.cover,
-  //     ),
-  //   ),
-  //   title: Text(
-  //     file.name,
-  //     style: TextStyle(
-  //       fontWeight: FontWeight.bold,
-  //       decoration: TextDecoration.underline,
-  //       color: Colors.blue,
-  //     ),
-  //   ),
-  //   onTap: () => Navigator.of(context).push(MaterialPageRoute(
-  //     builder: (context) => ImagePage(file: file),
-  //   )),
-  // );
 
   Widget buildHeader(int length) => ListTile(
     tileColor: Colors.blue,

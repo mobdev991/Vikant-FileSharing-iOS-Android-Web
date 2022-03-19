@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vekant_filesharing_app/my_home_page.dart';
 import 'package:vekant_filesharing_app/pages/list_files.dart';
+import 'package:vekant_filesharing_app/pages/main_screen.dart';
 
 import '../theme.dart';
 
@@ -81,7 +82,7 @@ class _LogInFormState extends State<LogInForm> {
                   password: _passwordTextController.text)
                   .then((value) {
 
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ListPage()), (route) => false);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainScreen()), (route) => false);
               }).onError((error, stackTrace) {
                 setState(() {
                   print('login error' + error.toString());

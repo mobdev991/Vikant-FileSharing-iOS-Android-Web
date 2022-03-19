@@ -40,7 +40,9 @@ class FirebaseApi {
         print(size);
       });
 
-      // final sizeInMbs = (size/(1024 * 1024)).toString();
+      if(filesNames.contains(name) == false){
+        filesNames.add(name);
+      }
       final file = FirebaseFile(ref: ref, name: name, url: url,size: size);
 
       print('File Name :: $name  File Size :: $size');

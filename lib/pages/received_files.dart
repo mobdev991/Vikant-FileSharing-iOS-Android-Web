@@ -7,12 +7,12 @@ import '../api/firebase_api.dart';
 import '../models/firebase_file.dart';
 import 'image_page.dart';
 
-class ListPage extends StatefulWidget {
+class ReceivedFilesPage extends StatefulWidget {
   @override
-  _ListPageState createState() => _ListPageState();
+  _ReceivedFilesPageState createState() => _ReceivedFilesPageState();
 }
 
-class _ListPageState extends State<ListPage> {
+class _ReceivedFilesPageState extends State<ReceivedFilesPage> {
   late Future<List<FirebaseFile>> futureFiles;
 
   @override
@@ -21,13 +21,13 @@ class _ListPageState extends State<ListPage> {
     final userID = FirebaseAuth.instance.currentUser!.uid;
     currentFirebaseUserID = userID;
 
-    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserID');
+    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserID/receivedFiles');
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text('List Pages'),
+      title: Text('Received Files'),
       centerTitle: true,
       actions: [
         IconButton(
