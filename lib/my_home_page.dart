@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-
+print(currentFirebaseUserEmail);
     super.initState();
   }
 
@@ -129,10 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
     final fileName = basename(file!.path);
-    final destination = 'files/$currentFirebaseUserID/$fileName';
-
-    task = FirebaseApi.uploadFile(destination, file!);
-    setState(() {});
+    final destination = 'files/$currentFirebaseUserEmail/$fileName';
+print(destination);
+    task = FirebaseApi.uploadFile(destination, file!,'');
 
     if (task == null) return;
 

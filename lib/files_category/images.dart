@@ -18,9 +18,9 @@ class _ImageScreenState extends State<ImageScreen> {
   void initState() {
     super.initState();
     final userID = FirebaseAuth.instance.currentUser!.uid;
-    currentFirebaseUserID = userID;
 
-    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserID');
+
+    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserEmail');
   }
 
   @override

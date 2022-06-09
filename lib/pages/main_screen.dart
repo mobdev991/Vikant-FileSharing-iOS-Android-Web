@@ -10,8 +10,12 @@ import 'package:vekant_filesharing_app/my_home_page.dart';
 import 'package:vekant_filesharing_app/pages/received_files.dart';
 import 'package:vekant_filesharing_app/pages/send_files.dart';
 import 'package:vekant_filesharing_app/signin_page.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 import '../api/firebase_api.dart';
 import '../models/firebase_file.dart';
+
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,14 +30,24 @@ class _MainScreenState extends State<MainScreen> {
 
     super.initState();
     final userID = FirebaseAuth.instance.currentUser!.uid;
+    final userEmail = FirebaseAuth.instance.currentUser!.email;
     currentFirebaseUserID = userID;
+    currentFirebaseUserEmail = userEmail!;
 
-    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserID');
-    futureFiles = FirebaseApi.listAllImages('files/$currentFirebaseUserID');
-  }
+    print('UserID :: $currentFirebaseUserID');
+    print('Email :: $currentFirebaseUserEmail');
+    readUserData(userID);
+
+    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserEmail');
+    FirebaseApi.receivedFilesListAll(
+        'files/$currentFirebaseUserEmail/Receive Files');
+
+    }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    ProgressDialog pd = ProgressDialog(context: context);
+  return Scaffold(
 
     drawer: Drawer(
       child: Container(
@@ -78,9 +92,13 @@ class _MainScreenState extends State<MainScreen> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              onTap: () {
+              onTap: () async{
+
+
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivedFilesPage()));
                 print('Received Files Clicked!');
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivedFilesPage()));
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivedFilesPage()));
               },
             ),
             ListTile(
@@ -139,8 +157,8 @@ class _MainScreenState extends State<MainScreen> {
       actions: [
         IconButton(
           icon: Icon(Icons.file_upload),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+          onPressed: () async {
+
           },
         ),
 
@@ -272,6 +290,7 @@ class _MainScreenState extends State<MainScreen> {
       },
     ),
   );
+  }
 
   Widget buildHeader(int length) => ListTile(
     tileColor: Colors.blue,
@@ -292,4 +311,21 @@ class _MainScreenState extends State<MainScreen> {
       ),
     ),
   );
+
+  void readUserData(String uid){
+
+    DatabaseReference userRef = FirebaseDatabase.instance.ref().child("users").child(uid);
+
+    userRef.child('email').once().then((DatabaseEvent event ) {
+      DataSnapshot snap = event.snapshot;
+      print(snap.value);
+
+
+    });
+
+  }
+
+  void onComplete(){
+
+  }
 }

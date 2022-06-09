@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:vekant_filesharing_app/config.dart';
 
 import '../../models/firebase_file.dart';
 import '../api/firebase_api.dart';
@@ -26,7 +27,6 @@ class ImagePage extends StatelessWidget {
             icon: Icon(Icons.file_download),
             onPressed: () async {
               await FirebaseApi.downloadFile(file.ref);
-
               final snackBar = SnackBar(
                 content: Text('Downloaded ${file.name}'),
               );

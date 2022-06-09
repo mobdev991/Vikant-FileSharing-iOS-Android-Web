@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vekant_filesharing_app/my_home_page.dart';
 import 'package:vekant_filesharing_app/pages/list_files.dart';
 import 'package:vekant_filesharing_app/pages/main_screen.dart';
+import 'package:vekant_filesharing_app/pages/reset_password.dart';
 
 import '../theme.dart';
 
@@ -42,10 +43,10 @@ class _LogInFormState extends State<LogInForm> {
           children: [
             GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => ResetPasswordScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResetPasswordScreen()));
               },
               child: Text(
                 'Forgot password?',

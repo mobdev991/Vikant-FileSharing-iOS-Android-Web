@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vekant_filesharing_app/config.dart';
 import 'package:vekant_filesharing_app/my_home_page.dart';
-import 'package:vekant_filesharing_app/signin_page.dart';
 import '../api/firebase_api.dart';
 import '../models/firebase_file.dart';
+import '../widgets/recieved_item.dart';
 import 'image_page.dart';
 
 class ReceivedFilesPage extends StatefulWidget {
@@ -13,7 +13,6 @@ class ReceivedFilesPage extends StatefulWidget {
 }
 
 class _ReceivedFilesPageState extends State<ReceivedFilesPage> {
-  late Future<List<FirebaseFile>> futureFiles;
 
   @override
   void initState() {
@@ -21,7 +20,9 @@ class _ReceivedFilesPageState extends State<ReceivedFilesPage> {
     final userID = FirebaseAuth.instance.currentUser!.uid;
     currentFirebaseUserID = userID;
 
-    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserID/receivedFiles');
+    // futureRecievedFiles = FirebaseApi.listAll('files/$currentFirebaseUserEmail/Receive Files');
+
+    // print(futureFiles);
   }
 
   @override
@@ -40,41 +41,54 @@ class _ReceivedFilesPageState extends State<ReceivedFilesPage> {
         const SizedBox(width: 12),
       ],
     ),
-    body: FutureBuilder<List<FirebaseFile>>(
-      future: futureFiles,
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Center(child: CircularProgressIndicator());
-          default:
-            if (snapshot.hasError) {
-              return Center(child: Text('Some error occurred!'));
-            } else {
-              final files = snapshot.data!;
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildHeader(files.length),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: files.length,
-                      itemBuilder: (context, index) {
-                        final file = files[index];
-
-                        return buildFile(context, file);
-                      },
-                    ),
-                  ),
-                  Text(totalSizeGB.toString()),
-
-                ],
-              );
-            }
-        }
+    body: ListView.separated(
+      itemBuilder: (BuildContext context, index) {
+        return HistoryItem(fileList: listRecievedFiles[index]);
       },
+      separatorBuilder: (BuildContext context, index) => SizedBox(
+        height: 3,
+      ),
+      itemCount: listRecievedFiles.length,
+      padding: EdgeInsets.all(5),
+      physics: ClampingScrollPhysics(),
+      shrinkWrap: true,
     ),
+
+    // FutureBuilder<List<FirebaseFile>>(
+    //   future: futureRecievedFiles,
+    //   builder: (context, snapshot) {
+    //     switch (snapshot.connectionState) {
+    //       case ConnectionState.waiting:
+    //         return Center(child: CircularProgressIndicator());
+    //       default:
+    //         if (snapshot.hasError) {
+    //           return Center(child: Text('Some error occurred!'));
+    //         } else {
+    //           final files = snapshot.data!;
+    //
+    //           return Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: [
+    //               buildHeader(files.length),
+    //               const SizedBox(height: 12),
+    //               Expanded(
+    //                 child: ListView.builder(
+    //                   itemCount: files.length,
+    //                   itemBuilder: (context, index) {
+    //                     final file = files[index];
+    //
+    //                     return buildFile(context, file);
+    //                   },
+    //                 ),
+    //               ),
+    //               Text(totalSizeGB.toString()),
+    //
+    //             ],
+    //           );
+    //         }
+    //     }
+    //   },
+    // ),
   );
 
   Widget buildFile(BuildContext context, FirebaseFile file) => ListTile(
@@ -118,4 +132,6 @@ class _ReceivedFilesPageState extends State<ReceivedFilesPage> {
       ),
     ),
   );
+
+
 }

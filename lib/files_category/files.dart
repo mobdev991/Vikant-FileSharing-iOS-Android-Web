@@ -19,9 +19,9 @@ class _FilesScreenState extends State<FilesScreen> {
   void initState() {
     super.initState();
     final userID = FirebaseAuth.instance.currentUser!.uid;
-    currentFirebaseUserID = userID;
+    currentFirebaseUserEmail = userID;
 
-    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserID');
+    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserEmail');
   }
 
   @override

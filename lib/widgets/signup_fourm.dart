@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vekant_filesharing_app/pages/list_files.dart';
 import 'package:vekant_filesharing_app/pages/main_screen.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 import '../main.dart';
 import '../my_home_page.dart';
 
@@ -31,6 +32,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    ProgressDialog pd = ProgressDialog(context: context);
     return Column(
       children: <Widget>[
         TextFormField(
@@ -49,20 +51,6 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
         // buildInputForm('Last Name', false),
         buildInputForm('Email', false, _emailTextController),
-        TextFormField(
-          controller: _phoneTextController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          decoration: InputDecoration(
-            hintText: 'Phone   e.g  0303XXXXXXX',
-            hintStyle: TextStyle(color: kTextFieldColor),
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: kPrimaryColor)),
-
-          ),
-        ),
         buildInputForm('Password', true, _passwordTextController),
 
         Padding(
@@ -112,7 +100,7 @@ class _SignUpFormState extends State<SignUpForm> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0), side: BorderSide(color: Colors.indigo)),
           ),
 
-          onPressed: () {
+          onPressed: () async{
             if (_passwordTextController.text.length < 6) {
               displayToastMessage("Password Too Short", context);
             } else if (_nameTextController.text.length < 3) {
@@ -122,16 +110,13 @@ class _SignUpFormState extends State<SignUpForm> {
             } else if (!_emailTextController.text.contains("@") &&
                 !_emailTextController.text.contains(".")) {
               displayToastMessage("Invalid Email", context);
-            } else if (_phoneTextController.text.length == null) {
-              displayToastMessage("Enter Your Phone Nubmber", context);
             } else {
               if(checkedValue== true){
-                print('car info screen');
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainScreen()),
-                        (route) => false);
+
+
                 registerNewUser(context);
+
+
               }else{
                 displayToastMessage('Agree to TOS', context);
               }
@@ -208,7 +193,7 @@ class _SignUpFormState extends State<SignUpForm> {
       displayToastMessage("Account Created", context);
 
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-          builder: (context) => ListPage()), (route) => false);
+          builder: (context) => MainScreen()), (route) => false);
     } else {
       displayToastMessage("UserNotCreated", context);
     }

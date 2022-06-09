@@ -21,7 +21,7 @@ class _ListPageState extends State<ListPage> {
     final userID = FirebaseAuth.instance.currentUser!.uid;
     currentFirebaseUserID = userID;
 
-    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserID');
+    futureFiles = FirebaseApi.listAll('files/$currentFirebaseUserEmail');
   }
 
   @override
